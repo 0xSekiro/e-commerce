@@ -15,7 +15,7 @@ mongoose.connect(process.env.DB_LINK).then(() => {
 // Middlewares
 
 // documentation
-app.get("/api/docs", (req, res) => {
+app.get("/", (req, res) => {
   res.status(200).sendFile(`${__dirname}/docmentation.html`);
 }),
   // parse json data
