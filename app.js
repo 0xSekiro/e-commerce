@@ -5,7 +5,6 @@ dotenv.config({ path: "./config.env" });
 // require and lanuch express app
 const express = require("express");
 const app = express();
-
 // connect to db
 const mongoose = require("mongoose");
 mongoose.connect(process.env.DB_LINK).then(() => {
@@ -13,6 +12,14 @@ mongoose.connect(process.env.DB_LINK).then(() => {
 });
 
 // Middlewares
+
+// enable cors
+const cors = require("cors");
+app.use(cors());
+
+// logging
+const morgan = require("morgan");
+app.use(morgan("combined"));
 
 // documentation
 app.get("/", (req, res) => {
