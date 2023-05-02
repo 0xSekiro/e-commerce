@@ -88,11 +88,11 @@ exports.forgotPassword = async (req, res) => {
 
   await user.save({ validateBeforeSave: false });
 
-  const msg = `Forgot your password? send PATCH request with password and passwordConfirm to ${
-    process.env.DEV_PROTOCOOL || process.env.PRODUCTION_PROTOCOOL
-  }://${req.hostname}:${
-    process.env.PORT || ""
-  }/api/v1/auth/resetPassword/${generatedToken}\n( Token valid for 10 min )\n`;
+  if (process.env.ENV == "development") {
+    const msg = `Forgot your password? send PATCH request with password and passwordConfirm to http://${req.hostname}:8080/api/v1/auth/resetPassword/${generatedToken}\n( Token valid for 10 min )\n`;
+  } else {
+    const msg = `Forgot your password? send PATCH request with password and passwordConfirm to https://${req.hostname}/api/v1/auth/resetPassword/${generatedToken}\n( Token valid for 10 min )\n`;
+  }
 
   await sendEmail(req.body.email, "Password reset token", msg);
 
