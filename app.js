@@ -22,9 +22,9 @@ app.use("/", express.json());
 const authRouter = require("./routers/authRouter");
 app.use("/api/v1/auth", authRouter);
 
-// // listening on port 8080
-// app.listen(8080, () => {
-//   console.log("Start listening on port 8080...");
-// });
+// listening on port 8080
+app.listen(8080, () => {
+  console.log("Start listening on port 8080...");
+});
 
 module.exports = app;
