@@ -1,0 +1,22 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "homepage": "https://0xSekiro.github.io/e-commerceApp",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "me - muhammad mostafa",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.1.0",
+    "passport": "^0.6.0",
+    "passport-google-oauth2": "^0.2.0",
+    "validator": "^13.9.0"
+  }
+}
