@@ -39,7 +39,7 @@ if (process.env.ENV == "development") {
   });
 } else {
   process.env.PORT = undefined;
-  process.env.PROTOCOOL = https;
+  process.env.PROTOCOOL = "https";
 }
 
 module.exports = app;
