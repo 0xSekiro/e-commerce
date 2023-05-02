@@ -8,7 +8,7 @@ const app = express();
 
 // connect to db
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/e-commerce").then(() => {
+mongoose.connect(process.env.DB_LINK).then(() => {
   console.log("DB connected successfully");
 });
 
@@ -26,3 +26,5 @@ app.use("/api/v1/auth", authRouter);
 app.listen(8080, () => {
   console.log("Start listening on port 8080...");
 });
+
+module.exports = app;
