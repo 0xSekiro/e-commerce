@@ -89,9 +89,9 @@ exports.forgotPassword = async (req, res) => {
   await user.save({ validateBeforeSave: false });
 
   const msg = `Forgot your password? send PATCH request with password and passwordConfirm to ${
-    req.protocol
+    process.env.PROTOCOOL
   }://${req.hostname}:${
-    process.env.PORT || null
+    process.env.PORT || ""
   }/api/v1/auth/resetPassword/${generatedToken}\n( Token valid for 10 min )\n`;
 
   await sendEmail(req.body.email, "Password reset token", msg);

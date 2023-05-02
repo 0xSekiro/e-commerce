@@ -32,9 +32,14 @@ const authRouter = require("./routers/authRouter");
 app.use("/api/v1/auth", authRouter);
 
 // listening on port 8080
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-  console.log(`Start listening on ${PORT} ...`);
-});
+if (process.env.ENV == "development") {
+  const PORT = process.env.PORT;
+  app.listen(PORT, () => {
+    console.log(`Start listening on ${PORT} ...`);
+  });
+} else {
+  process.env.PORT = undefined;
+  process.env.PROTOCOOL = https;
+}
 
 module.exports = app;
