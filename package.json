@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "homepage": "https://0xSekiro.github.io/e-commerceApp",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "author": "me - muhammad mostafa",
   "license": "ISC",
