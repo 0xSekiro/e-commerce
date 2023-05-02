@@ -14,10 +14,12 @@ mongoose.connect(process.env.DB_LINK).then(() => {
 
 // Middlewares
 
-// serve static files
-app.use("/public/", express.static("../public"));
-// parse json data
-app.use("/", express.json());
+// documentation
+app.get("/api/docs", (req, res) => {
+  res.status(200).sendFile(`${__dirname}/docmentation.html`);
+}),
+  // parse json data
+  app.use("/", express.json());
 // api routing
 const authRouter = require("./routers/authRouter");
 app.use("/api/v1/auth", authRouter);
