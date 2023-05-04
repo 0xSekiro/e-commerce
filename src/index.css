@@ -33,3 +33,7 @@
   .login-with-google-btn:focus {
     outline: unset;
   }
+
+  .logINS {
+    display: flex;
+  }
