@@ -5,6 +5,7 @@ import Login from './Components/Login/Login'
 import { Provider } from 'react-redux'
 import Test from './Components/Test/Test'
 import jwtDecode from 'jwt-decode'
+import ResetPassword from './Components/ResetPassword/ResetPassword'
 
 
 
@@ -44,6 +45,7 @@ export default function App() {
 
         {path:"/register",element :<SignUp/>},
         {path:"/login",element :<Login getUserDataDecoded={getUserDataDecoded}/>},
+        {path:"/reset",element :<ResetPassword />},
         {path:"/test",element :<Test/>},
 
 
