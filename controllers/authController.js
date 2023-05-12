@@ -89,9 +89,9 @@ exports.forgotPassword = async (req, res) => {
   await user.save({ validateBeforeSave: false });
   let msg;
   if (process.env.ENV == "development") {
-    msg = `Forgot your password? send PATCH request with password and passwordConfirm to https://mytrial-pjhg.onrender.com/reset/${generatedToken} \n( Token valid for 10 min )\n`;
+    msg = `Forgot your password? send PATCH request with password and passwordConfirm to https://127.0.0.1:8080/api/v1/auth/resetPassword/${generatedToken} \n( Token valid for 10 min )\n`;
   } else {
-    msg = `Forgot your password? send PATCH request with password and passwordConfirm to https://mytrial-pjhg.onrender.com/reset/${generatedToken} \n( Token valid for 10 min )\n`;
+    msg = `Forgot your password? send PATCH request with password and passwordConfirm to https://sarahheshamali2.github.io/connectedEcommerce/#/reset/${generatedToken} \n( Token valid for 10 min )\n`;
   }
 
   await sendEmail(req.body.email, "Password reset token", msg);
