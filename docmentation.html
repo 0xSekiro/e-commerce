@@ -7,6 +7,7 @@
     <title>Documentation</title>
   </head>
   <body>
+    <!-- Auth -->
     <h1>Sign Up</h1>
     <h3>Route: /api/v1/auth/sign-up</h3>
     <h3>Required fields: [username, email, password, passwordConfirm]</h3>
@@ -21,5 +22,21 @@
       Method: PATCH, Route: /api/v1/auth/resetPassword/&lt;your-token-here&gt;
     </h3>
     <h3>Required fields: [password, passwordConfirm]</h3>
+    <!-- Products -->
+
+    <h1>Get all products</h1>
+    <h3>Method: GET, Route: /api/v1/products/</h3>
+
+    <h1>Get specific product</h1>
+    <h3>Method: GET, Route: /api/v1/products/&lt;product-ID&gt;</h3>
+
+    <h1>Get specific category products</h1>
+    <h3>
+      Method: GET, Route: /api/v1/products/category/&lt;cateogry-name&gt;
+      <p>availabe categories: [sport, book, game]</p>
+    </h3>
+
+    <h1>Get random products</h1>
+    <h3>Method: GET, Route: /api/v1/products/random</h3>
   </body>
 </html>

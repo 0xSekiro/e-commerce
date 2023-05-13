@@ -31,6 +31,9 @@ app.get("/", (req, res) => {
 const authRouter = require("./routers/authRouter");
 app.use("/api/v1/auth", authRouter);
 
+const productRouter = require("./routers/productRouter");
+app.use("/api/v1/products/", productRouter);
+
 // listening on port 8080
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
