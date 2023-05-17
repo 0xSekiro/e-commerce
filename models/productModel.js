@@ -21,7 +21,7 @@ const productSchema = new mongoose.Schema(
       required: [true, "Product must have belong to a category"],
     },
     img: {
-      type: String,
+      type: Array,
       required: [true, "Product must have an image"],
     },
   },
