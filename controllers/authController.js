@@ -45,8 +45,7 @@ exports.login = async (req, res) => {
 };
 
 exports.checkAuthorization = (req, res, next) => {
-  const token = req.headers["authorization"];
-
+  let token = req.headers["authorization"];
   // check if token exist
   if (!token) {
     return res.status(401).json({
@@ -57,6 +56,7 @@ exports.checkAuthorization = (req, res, next) => {
 
   // verify token
   try {
+    let token = req.headers["authorization"].split(" ")[1];
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decodedToken.id;
   } catch (err) {

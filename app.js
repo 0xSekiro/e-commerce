@@ -34,6 +34,9 @@ app.use("/api/v1/auth", authRouter);
 const productRouter = require("./routers/productRouter");
 app.use("/api/v1/products/", productRouter);
 
+const cartRouter = require("./routers/cartRouter");
+app.use("/api/v1/cart", cartRouter);
+
 // listening on port 8080
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

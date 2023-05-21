@@ -22,6 +22,7 @@
       Method: PATCH, Route: /api/v1/auth/resetPassword/&lt;your-token-here&gt;
     </h3>
     <h3>Required fields: [password, passwordConfirm]</h3>
+    <hr />
     <!-- Products -->
 
     <h1>Get all products</h1>
@@ -38,5 +39,19 @@
 
     <h1>Get random products</h1>
     <h3>Method: GET, Route: /api/v1/products/random</h3>
+    <hr />
+
+    <!--Cart-->
+    <u><h1>Must be logged in to deal with cart</h1></u>
+
+    <h1>Get cart</h1>
+    <h3>Method: GET, Route: /api/v1/cart/</h3>
+    <h1>Add to cart</h1>
+    <h3>Method: POST, Route: /api/v1/cart/</h3>
+    <h3>Required fields: [product (EX: 645fa5df07a0feb6d95bb545)]</h3>
+    <h1>Empty cart ==> delete all cart items</h1>
+    <h3>Method: DELETE, Route: /api/v1/cart/</h3>
+    <h1>delete specific item</h1>
+    <h3>Method: DELETE, Route: /api/v1/cart/&lt;cart-item-id&gt;</h3>
   </body>
 </html>
