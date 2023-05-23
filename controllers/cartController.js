@@ -39,11 +39,16 @@ exports.emptyCart = async (req, res) => {
 };
 
 exports.deleteCart = async (req, res) => {
-  const cart = await Cart.deleteOne({
+  await Cart.deleteOne({
     user: req.user,
     _id: req.params.cartId,
   });
-  res.status(204).json({
-    status: "success",
+  const cart = await Cart.find({ user: req.user })
+    .select("-user")
+    .populate("product");
+
+  res.status(200).json({
+    status: "Deleted successfully",
+    cart,
   });
 };
