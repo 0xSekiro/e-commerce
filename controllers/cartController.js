@@ -107,16 +107,21 @@ exports.updateQuantity = async (req, res) => {
       });
     }
     cart.quantity = req.body.quantity;
-    await Cart.updateOne(
+    const newCart = await Cart.findByIdAndUpdate(
+      req.params.cartId,
       {
-        _id: req.params.cartId,
+        quantity: req.body.quantity,
       },
-      { quantity: req.body.quantity }
-    );
+      {
+        new: true,
+      }
+    )
+      .select("-user")
+      .populate("product");
 
     res.status(200).json({
       status: "success",
-      message: "Cart updated successfully",
+      newCart,
     });
   } catch (err) {
     res.status(400).json({
