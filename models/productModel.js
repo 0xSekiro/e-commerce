@@ -24,6 +24,10 @@ const productSchema = new mongoose.Schema(
       type: Array,
       required: [true, "Product must have an image"],
     },
+    quantity: {
+      type: Number,
+      required: [true, "Product must hava a quantity"],
+    },
   },
   { versionKey: false }
 );

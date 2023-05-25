@@ -12,6 +12,10 @@ const cartSchema = new mongoose.Schema(
       ref: "Product",
       required: [true, "cannot add empty to cart"],
     },
+    quantity: {
+      type: Number,
+      required: [true, "Please specify the quantity"],
+    },
   },
   { versionKey: false }
 );
