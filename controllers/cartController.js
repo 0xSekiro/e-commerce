@@ -98,7 +98,7 @@ exports.deleteCart = async (req, res) => {
 
 exports.updateQuantity = async (req, res) => {
   try {
-    const cart = await Cart.findOne({
+    let cart = await Cart.findOne({
       user: req.user,
       _id: req.params.cartId,
     }).populate("product");
@@ -112,21 +112,23 @@ exports.updateQuantity = async (req, res) => {
       });
     }
     cart.quantity = req.body.quantity;
-    const newCart = await Cart.findByIdAndUpdate(
-      req.params.cartId,
-      {
-        quantity: req.body.quantity,
-      },
-      {
-        new: true,
-      }
-    )
+    const newCart = await Cart.findByIdAndUpdate(req.params.cartId, {
+      quantity: req.body.quantity,
+    })
       .select("-user")
       .populate("product");
+    cart = await Cart.find({ user: req.user })
+      .select("-user")
+      .populate("product");
+    let price = 0;
+    cart.forEach((el) => {
+      price += el.product.price * el.quantity;
+    });
 
     res.status(200).json({
       status: "success",
-      newCart,
+      price,
+      cart,
     });
   } catch (err) {
     res.status(400).json({
