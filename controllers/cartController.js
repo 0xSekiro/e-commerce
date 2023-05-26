@@ -15,8 +15,13 @@ exports.getCart = async (req, res) => {
   const cart = await Cart.find({ user: req.user })
     .select("-user")
     .populate("product");
+  let price = 0;
+  cart.forEach((el) => {
+    price += el.product.price * el.quantity;
+  });
   res.json({
     status: "success",
+    price,
     cart,
   });
 };
