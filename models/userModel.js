@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
+    google_id: String,
     username: {
       type: String,
       required: [true, "Must enter username"],
@@ -19,6 +20,7 @@ const userSchema = new mongoose.Schema(
         },
         message: "Invalid email",
       },
+      sparse: true,
       trim: true,
     },
     password: {

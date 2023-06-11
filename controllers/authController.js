@@ -10,6 +10,8 @@ function signToken(id) {
   });
 }
 
+exports.logUser = signToken;
+
 exports.singUP = async (req, res) => {
   try {
     const user = await User.create(req.body);
@@ -28,18 +30,25 @@ exports.singUP = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
+  try {
+    const user = await User.findOne({ email: req.body.email });
 
-  if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
-    res.status(401).json({
+    if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+      res.status(401).json({
+        status: "fail",
+        message: "Invalid email or password",
+      });
+    } else {
+      const token = signToken(user._id);
+      res.status(200).json({
+        status: "success",
+        token,
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
       status: "fail",
-      message: "Invalid email or password",
-    });
-  } else {
-    const token = signToken(user._id);
-    res.status(200).json({
-      status: "success",
-      token,
+      err,
     });
   }
 };
@@ -141,5 +150,13 @@ exports.resetPassword = async (req, res) => {
   res.status(200).json({
     status: "success",
     message: "password changed successfully",
+  });
+};
+
+exports.logWithGoogle = (req, res) => {
+  const token = signToken(req.user._id);
+  res.status(200).json({
+    status: "sucess",
+    token,
   });
 };
