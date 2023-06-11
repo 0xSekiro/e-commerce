@@ -2,7 +2,7 @@
 
 # functions
 
-1- Oauth with google [login/sign up]
+1- Oauth with google [login/sign up]\n
 2- [sign up/login] with email and password 
 3- password reset
 4- browse products and get 5 random products for home page
