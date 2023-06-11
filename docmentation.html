@@ -7,7 +7,12 @@
     <title>Documentation</title>
   </head>
   <body>
+    <h1 style="font-size: 30px; font-weight: bold">
+      E-Commerce REST API *Under construction*
+    </h1>
     <!-- Auth -->
+    <h1>Login|Sign up with google</h1>
+    <h3>Method: GET, Route: /api/v1/auth/google</h3>
     <h1>Sign Up</h1>
     <h3>Route: /api/v1/auth/sign-up</h3>
     <h3>Required fields: [username, email, password, passwordConfirm]</h3>
@@ -22,7 +27,6 @@
       Method: PATCH, Route: /api/v1/auth/resetPassword/&lt;your-token-here&gt;
     </h3>
     <h3>Required fields: [password, passwordConfirm]</h3>
-    <hr />
     <!-- Products -->
 
     <h1>Get all products</h1>
@@ -59,5 +63,13 @@
     <h1>Update quantity</h1>
     <h3>Method: PATCH, Route: /api/v1/cart/&lt;cart-item-id&gt;</h3>
     <h3>Required fields: [quantity: (EX: 2)]</h3>
+    <hr />
+    <!-- Profile -->
+    <u><h1>Must be logged in to deal with profile</h1></u>
+    <h1>Add product to wishlist</h1>
+    <h3>Method: POST, Route: /api/v1/profile/wishlist</h3>
+    <h3>Required fields: [product: (EX: 645fa5df07a0feb6d95bb545)]</h3>
+    <h1>get user wishlist</h1>
+    <h3>Method: GET, Route: /api/v1/profile/wishlist</h3>
   </body>
 </html>

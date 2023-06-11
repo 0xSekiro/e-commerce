@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
       required: [true, "Must enter username"],
       trim: true,
     },
+    wishList: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     email: {
       type: String,
       unique: [true, "Email must be unique"],
