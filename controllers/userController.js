@@ -1,23 +1,65 @@
 const User = require("../models/userModel");
 
 exports.addToWishList = async (req, res) => {
-  const user = await User.findById(req.user);
-  console.log(req.user);
-  console.log(user);
-  user.wishList.push(req.body.product);
-  await user.save({ validateBeforeSave: false });
+  try {
+    if (req.body.product) {
+      const user = await User.findById(req.user);
+      if (user.wishList.includes(req.body.product)) {
+        return res.status(400).json({
+          status: "fail",
+          message: "item already in wishlist",
+        });
+      }
+      user.wishList.push(req.body.product);
+      await user.save({ validateBeforeSave: false });
 
-  res.status(201).json({
-    status: "sucess",
-  });
+      const wishList = (
+        await User.findById(req.user)
+          .select("wishList -_id")
+          .populate("wishList")
+      ).wishList;
+
+      res.status(201).json({
+        status: "sucess",
+        wishList,
+      });
+    } else {
+      res.status(400).json({
+        status: "fail",
+        message: "Missing product parameter",
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      err,
+    });
+  }
 };
 
 exports.getWishList = async (req, res) => {
-  const wishList = await User.findById(req.user)
-    .select("wishList")
-    .populate("wishList");
+  const wishList = (
+    await User.findById(req.user).select("wishList -_id").populate("wishList")
+  ).wishList;
   res.status(200).json({
     status: "success",
     wishList,
   });
+};
+
+exports.deleteWishList = async (req, res) => {
+  try {
+    const user = await User.findById(req.user);
+    console.log(user);
+    user.wishList.includes(req.body.product) &&
+      user.wishList.splice(user.wishList.indexOf(req.body.product), 1);
+    await user.save({ validateBeforeSave: false });
+
+    res.status(204).json({
+      status: "success",
+    });
+  } catch (err) {
+    res.status(400).json({
+      err,
+    });
+  }
 };

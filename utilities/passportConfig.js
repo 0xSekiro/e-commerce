@@ -5,10 +5,9 @@ const User = require("../models/userModel");
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL:
-        "https://e-commerce-9w3i.onrender.com/api/v1/auth/google/callback",
+      clientID: process.env.GOOGLE_ID_PRODUCTOIN,
+      clientSecret: process.env.GOOGLE_SECRET_PRODUCTION,
+      callbackURL: process.env.CALLBACK_URL_PRODUCTION,
     },
     async (accessToken, refreshToken, profile, done) => {
       let user = await User.findOne({ google_id: profile.id });
@@ -16,6 +15,7 @@ passport.use(
         user = new User({
           google_id: profile.id,
           username: profile.displayName,
+          photo: profile.photos[0].value,
         });
         await user.save({ validateBeforeSave: false });
       }

@@ -1,3 +1,6 @@
 /node_modules/
 /data.json
 /utilities/script.js
+/config.env
+/test.js
+/test.html
