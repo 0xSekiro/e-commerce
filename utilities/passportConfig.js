@@ -15,7 +15,6 @@ passport.use(
         user = new User({
           google_id: profile.id,
           username: profile.displayName,
-          photo: profile.photos[0].value,
         });
         await user.save({ validateBeforeSave: false });
       }
