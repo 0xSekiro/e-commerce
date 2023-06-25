@@ -156,6 +156,6 @@ exports.resetPassword = async (req, res) => {
 exports.logWithGoogle = (req, res) => {
   const token = signToken(req.user._id);
   res.redirect(
-    `https://sarahheshamali2.github.io/connectedEcommerce/#/home?token=${token}`
+    `https://sarahheshamali2.github.io/connectedEcommerce/#/home/${token}`
   );
 };
