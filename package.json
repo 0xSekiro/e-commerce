@@ -24,6 +24,7 @@
     "passport": "^0.6.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-google-oauth20": "^2.0.0",
+    "stripe": "^12.10.0",
     "validator": "^13.9.0"
   }
 }

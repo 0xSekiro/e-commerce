@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utilities//sendgrid");
+const errHandler = require("../controllers/errorController");
 
 function signToken(id) {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -14,7 +15,14 @@ exports.logUser = signToken;
 
 exports.singUP = async (req, res) => {
   try {
-    const user = await User.create(req.body);
+    const { username, email, password, passwordConfirm } = { ...req.body };
+    console.log("cred " + username, email, password, passwordConfirm);
+    const user = await User.create({
+      username,
+      email,
+      password,
+      passwordConfirm,
+    });
     const token = signToken(user._id);
     res.status(201).json({
       status: "success",
@@ -22,18 +30,24 @@ exports.singUP = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      err,
-    });
+    errHandler.returnError(400, err.message, res);
   }
 };
 
 exports.login = async (req, res) => {
   try {
+    if (!req.body.email || !req.body.password)
+      return errHandler.returnError(
+        400,
+        "Missed [email, password] parameters",
+        res
+      );
     const user = await User.findOne({ email: req.body.email });
 
-    if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+    if (
+      !user ||
+      !(await bcrypt.compare(String(req.body.password), user.password))
+    ) {
       res.status(401).json({
         status: "fail",
         message: "Invalid email or password",
@@ -155,7 +169,9 @@ exports.resetPassword = async (req, res) => {
 
 exports.logWithGoogle = (req, res) => {
   const token = signToken(req.user._id);
-  res.redirect(
-    `https://sarahheshamali2.github.io/connectedEcommerce/#/home/${token}`
-  );
+  res
+    .status(302)
+    .redirect(
+      `https://sarahheshamali2.github.io/connectedEcommerce/#/home/${token}`
+    );
 };

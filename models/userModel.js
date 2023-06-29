@@ -4,7 +4,9 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
+    stripe_id: String,
     google_id: String,
+    card_id: String,
     username: {
       type: String,
       required: [true, "Must enter username"],
@@ -44,6 +46,7 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 );
 

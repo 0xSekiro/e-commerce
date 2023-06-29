@@ -1,5 +1,7 @@
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
+const User = require("../models/userModel");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 async function checkQuantity(product_id, req_quantity) {
   const product = await Product.findById(product_id);
@@ -19,6 +21,7 @@ exports.getCart = async (req, res) => {
   cart.forEach((el) => {
     price += el.product.price * el.quantity;
   });
+
   res.json({
     status: "success",
     price,
@@ -132,6 +135,108 @@ exports.updateQuantity = async (req, res) => {
     });
   } catch (err) {
     res.status(400).json({
+      status: "fail",
+      err,
+    });
+  }
+};
+
+exports.checkout = async (req, res) => {
+  try {
+    const fields = [
+      req.body.email,
+      req.body.card_number,
+      req.body.exp_month,
+      req.body.exp_year,
+      req.body.cvc,
+      req.body.city,
+      req.body.country,
+      req.body.address_details,
+    ];
+    for (i = 0; i < fields.length; i++) {
+      if (!fields[i]) {
+        return res.status(400).json({
+          status: "fail",
+          message:
+            "Missing 1 or more of 8 fields ['fields','email','card_number','exp_month','exp_year','cvc', 'country', 'city', 'address_details']",
+        });
+      }
+    }
+
+    const user = await User.findById(req.user);
+
+    // check user as customer
+    if (!user.stripe_id) {
+      const param = {};
+      param.name = user.username;
+      param.email = req.body.email;
+      const customer = await stripe.customers.create(param);
+      user.stripe_id = customer.id;
+      await user.save({ validateBeforeSave: false });
+    }
+
+    // delete last card
+    if (user.card_id) {
+      const deleted = await stripe.customers.deleteSource(
+        user.stripe_id,
+        user.card_id
+      );
+    }
+
+    // add token
+    let param = {
+      card: {
+        number: String(req.body.card_number),
+        exp_month: Number(req.body.exp_month),
+        exp_year: Number(req.body.exp_year),
+        cvc: String(req.body.cvc),
+        address_country: String(req.body.country),
+        address_city: String(req.body.city),
+        address_line1: String(req.body.address_details),
+      },
+    };
+
+    const token = await stripe.tokens.create(param);
+
+    // add card
+    const card = await stripe.customers.createSource(user.stripe_id, {
+      source: token.id,
+    });
+    (user.card_id = card.id), await user.save({ validateBeforeSave: false });
+
+    // charge
+    const cart = await Cart.find({ user: req.user })
+      .select("-user")
+      .populate("product");
+    let price = 0;
+    cart.forEach((el) => {
+      price += el.product.price * el.quantity;
+    });
+    param = {
+      amount: price,
+      currency: "usd",
+      customer: user.stripe_id,
+    };
+
+    if (price == 0) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Cart is empty",
+      });
+    }
+
+    await stripe.charges.create(param);
+
+    // empty card
+
+    await Cart.deleteMany({ user: req.user });
+
+    res.status(200).json({
+      status: "success",
+      messgage: `Payment completed successfully`,
+    });
+  } catch (err) {
+    return res.status(400).json({
       status: "fail",
       err,
     });

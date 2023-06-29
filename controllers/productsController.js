@@ -1,4 +1,5 @@
 const Product = require("../models/productModel");
+const errHandler = require("../controllers/errorController");
 
 exports.getAllProducts = async (req, res) => {
   const products = await Product.find();
@@ -12,14 +13,15 @@ exports.getAllProducts = async (req, res) => {
 exports.getProduct = async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
+    if (!product) return errHandler.returnError(200, "Product not found", res);
     res.status(200).json({
       status: "success",
       product,
     });
   } catch (err) {
-    res.status(400).json({
+    res.status(404).json({
       status: "fail",
-      message: "Invalid ID",
+      message: "Product not found",
     });
   }
 };

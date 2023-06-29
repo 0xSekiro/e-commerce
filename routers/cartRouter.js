@@ -10,6 +10,7 @@ router
   .get(cartController.getCart)
   .post(cartController.addToCart)
   .delete(cartController.emptyCart);
+router.post("/checkout", cartController.checkout);
 router
   .route("/:cartId")
   .delete(cartController.deleteCart)

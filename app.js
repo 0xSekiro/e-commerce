@@ -40,6 +40,13 @@ app.use("/api/v1/cart", cartRouter);
 const profileRouter = require("./routers/profileRouter");
 app.use("/api/v1/profile", profileRouter);
 
+app.use((req, res) => {
+  res.status(404).json({
+    status: "fail",
+    message: "Not found",
+  });
+});
+
 // listening on port 8080
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
