@@ -48,14 +48,16 @@ exports.getWishList = async (req, res) => {
 
 exports.deleteWishList = async (req, res) => {
   try {
-    const user = await User.findById(req.user);
-    console.log(user);
+    let user = await User.findById(req.user);
     user.wishList.includes(req.body.product) &&
       user.wishList.splice(user.wishList.indexOf(req.body.product), 1);
     await user.save({ validateBeforeSave: false });
-
-    res.status(204).json({
+    const wishList = (
+      await User.findById(req.user).select("wishList -_id").populate("wishList")
+    ).wishList;
+    res.status(200).json({
       status: "success",
+      wishList,
     });
   } catch (err) {
     res.status(400).json({
