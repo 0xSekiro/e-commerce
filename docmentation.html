@@ -63,6 +63,12 @@
     <h1>Update quantity</h1>
     <h3>Method: PATCH, Route: /api/v1/cart/&lt;cart-item-id&gt;</h3>
     <h3>Required fields: [quantity: (EX: 2)]</h3>
+    <h1>Checkout</h1>
+    <h3>Method: POST, Route: /api/v1/cart/checkout</h3>
+    <h3>
+      Required fields: [email, card_number, exp_year, exp_month, cvc, country,
+      city, address]
+    </h3>
     <hr />
     <!-- Profile -->
     <u><h1>Must be logged in to deal with profile</h1></u>

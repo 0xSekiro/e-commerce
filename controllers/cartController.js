@@ -151,7 +151,7 @@ exports.checkout = async (req, res) => {
       req.body.cvc,
       req.body.city,
       req.body.country,
-      req.body.address_details,
+      req.body.address,
     ];
     for (i = 0; i < fields.length; i++) {
       if (!fields[i]) {
@@ -192,7 +192,7 @@ exports.checkout = async (req, res) => {
         cvc: String(req.body.cvc),
         address_country: String(req.body.country),
         address_city: String(req.body.city),
-        address_line1: String(req.body.address_details),
+        address_line1: String(req.body.address),
       },
     };
 
