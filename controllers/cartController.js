@@ -1,7 +1,6 @@
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 const User = require("../models/userModel");
-const Order = require("../models/orderModel");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 async function checkQuantity(product_id, req_quantity) {
