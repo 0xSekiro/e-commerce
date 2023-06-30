@@ -158,7 +158,7 @@ exports.checkout = async (req, res) => {
         return res.status(400).json({
           status: "fail",
           message:
-            "Missing 1 or more of 8 fields ['fields','email','card_number','exp_month','exp_year','cvc', 'country', 'city', 'address_details']",
+            "Missing 1 or more of 8 fields ['fields','email','card_number','exp_month','exp_year','cvc', 'country', 'city', 'address']",
         });
       }
     }

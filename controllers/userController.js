@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const errHandler = require("./errorController");
 
 exports.addToWishList = async (req, res) => {
   try {
@@ -49,8 +50,11 @@ exports.getWishList = async (req, res) => {
 exports.deleteWishList = async (req, res) => {
   try {
     let user = await User.findById(req.user);
-    user.wishList.includes(req.body.product) &&
+    if (user.wishList.includes(req.body.product)) {
       user.wishList.splice(user.wishList.indexOf(req.body.product), 1);
+    } else {
+      return errHandler.returnError(400, "Invalid product ID", res);
+    }
     await user.save({ validateBeforeSave: false });
     const wishList = (
       await User.findById(req.user).select("wishList -_id").populate("wishList")
