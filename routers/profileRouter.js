@@ -10,4 +10,6 @@ router
   .get(userController.getWishList);
 router.delete("/wishlist/:id", userController.deleteWishList);
 
+router.route("/orders").get(userController.getOrders);
+
 module.exports = router;

@@ -1,6 +1,7 @@
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 const User = require("../models/userModel");
+const Order = require("../models/orderModel");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 async function checkQuantity(product_id, req_quantity) {
@@ -208,6 +209,10 @@ exports.checkout = async (req, res) => {
     const cart = await Cart.find({ user: req.user })
       .select("-user")
       .populate("product");
+    let products = [];
+    cart.forEach((el) => {
+      products.push(el.product._id);
+    });
     let price = 0;
     cart.forEach((el) => {
       price += el.product.price * el.quantity;
@@ -228,9 +233,14 @@ exports.checkout = async (req, res) => {
     await stripe.charges.create(param);
 
     // empty card
-
     await Cart.deleteMany({ user: req.user });
 
+    // create order
+    await Order.create({
+      user: req.user,
+      products,
+      total_price: price,
+    });
     res.status(200).json({
       status: "success",
       messgage: `Payment completed successfully`,

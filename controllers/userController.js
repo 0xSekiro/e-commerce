@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Order = require("../models/orderModel");
 const errHandler = require("./errorController");
 
 exports.addToWishList = async (req, res) => {
@@ -67,5 +68,19 @@ exports.deleteWishList = async (req, res) => {
     res.status(400).json({
       err,
     });
+  }
+};
+
+exports.getOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user })
+      .select("-user")
+      .populate("products");
+    res.status(200).json({
+      status: "success",
+      orders,
+    });
+  } catch (err) {
+    return errHandler.returnError(400, err, res);
   }
 };
