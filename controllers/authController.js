@@ -172,6 +172,6 @@ exports.logWithGoogle = (req, res) => {
   res
     .status(302)
     .redirect(
-      `https://sarahheshamali2.github.io/connectedEcommerce/#/home/${token}`
+      `https://sarahheshamali2.github.io/connectedEcommerce/#/googleuser/${token}`
     );
 };

@@ -1,6 +1,7 @@
 const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 const User = require("../models/userModel");
+const Order = require("../models/orderModel");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 async function checkQuantity(product_id, req_quantity) {
@@ -158,7 +159,7 @@ exports.checkout = async (req, res) => {
         return res.status(400).json({
           status: "fail",
           message:
-            "Missing 1 or more of 8 fields ['fields','email','card_number','exp_month','exp_year','cvc', 'country', 'city', 'address']",
+            "Missing 1 or more of 8 fields ['email','card_number','exp_month','exp_year','cvc', 'country', 'city', 'address']",
         });
       }
     }

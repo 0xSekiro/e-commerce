@@ -7,7 +7,7 @@ router.use(authController.checkAuthorization);
 router
   .route("/wishlist")
   .post(userController.addToWishList)
-  .get(userController.getWishList)
-  .delete(userController.deleteWishList);
+  .get(userController.getWishList);
+router.delete("/wishlist/:id", userController.deleteWishList);
 
 module.exports = router;

@@ -50,8 +50,8 @@ exports.getWishList = async (req, res) => {
 exports.deleteWishList = async (req, res) => {
   try {
     let user = await User.findById(req.user);
-    if (user.wishList.includes(req.body.product)) {
-      user.wishList.splice(user.wishList.indexOf(req.body.product), 1);
+    if (user.wishList.includes(req.params.id)) {
+      user.wishList.splice(user.wishList.indexOf(req.params.id), 1);
     } else {
       return errHandler.returnError(400, "Invalid product ID", res);
     }
