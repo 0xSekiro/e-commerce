@@ -178,10 +178,14 @@ exports.checkout = async (req, res) => {
 
     // delete last card
     if (user.card_id) {
-      const deleted = await stripe.customers.deleteSource(
-        user.stripe_id,
-        user.card_id
-      );
+      try {
+        const deleted = await stripe.customers.deleteSource(
+          user.stripe_id,
+          user.card_id
+        );
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     // add token
@@ -241,6 +245,9 @@ exports.checkout = async (req, res) => {
       products,
       total_price: price,
     });
+
+    // update product quantity
+
     res.status(200).json({
       status: "success",
       messgage: `Payment completed successfully`,
