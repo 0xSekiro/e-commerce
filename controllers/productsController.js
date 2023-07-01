@@ -2,7 +2,7 @@ const Product = require("../models/productModel");
 const errHandler = require("../controllers/errorController");
 
 exports.getAllProducts = async (req, res) => {
-  const products = await Product.find();
+  const products = await Product.find({ quantity: { $ne: 0 } });
   res.status(200).json({
     status: "success",
     results: products.length,

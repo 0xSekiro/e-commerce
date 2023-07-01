@@ -75,7 +75,7 @@ exports.getOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user })
       .select("-user")
-      .populate("products");
+      .populate({ path: "products", populate: "product" });
     res.status(200).json({
       status: "success",
       orders,

@@ -215,7 +215,10 @@ exports.checkout = async (req, res) => {
       .populate("product");
     let products = [];
     cart.forEach((el) => {
-      products.push(el.product._id);
+      let item = {};
+      item.product = el.product._id;
+      item.quantity = el.quantity;
+      products.push(item);
     });
     let price = 0;
     cart.forEach((el) => {
@@ -247,6 +250,11 @@ exports.checkout = async (req, res) => {
     });
 
     // update product quantity
+    products.forEach(async (item) => {
+      const product = await Product.findById(item.product);
+      product.quantity -= item.quantity;
+      await product.save({ validateBeforeSave: false });
+    });
 
     res.status(200).json({
       status: "success",
@@ -255,7 +263,8 @@ exports.checkout = async (req, res) => {
   } catch (err) {
     return res.status(400).json({
       status: "fail",
-      err,
+      message:
+        "Something went wrong, only stripe test cards allowed (EX: '4242424242424242')",
     });
   }
 };
