@@ -2,6 +2,7 @@ const Cart = require("../models/cartModel");
 const Product = require("../models/productModel");
 const User = require("../models/userModel");
 const Order = require("../models/orderModel");
+const errHandler = require("../controllers/errorController");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 async function checkQuantity(product_id, req_quantity) {
@@ -43,17 +44,19 @@ async function checkCart(product_id, user) {
 exports.addToCart = async (req, res) => {
   try {
     if (!(await checkCart(req.body.product, req.user))) {
-      return res.status(400).json({
-        status: "fail",
-        message: `Product already in cart, you can update it`,
-      });
+      return errHandler.returnError(
+        400,
+        `Product already in cart, you can update it`,
+        res
+      );
     }
     const product = await checkQuantity(req.body.product, req.body.quantity);
     if (typeof product == "number") {
-      return res.status(400).json({
-        status: "fail",
-        message: `There is only ${product} availabe items from this product`,
-      });
+      return errHandler.returnError(
+        400,
+        `There is only ${product} availabe items from this product`,
+        res
+      );
     }
     const cart = await Cart.create({
       user: req.user,
@@ -66,10 +69,7 @@ exports.addToCart = async (req, res) => {
       cart,
     });
   } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      err,
-    });
+    errHandler.returnError(500, "Something went wrong", res);
   }
 };
 
@@ -110,10 +110,11 @@ exports.updateQuantity = async (req, res) => {
     const product = cart.product;
 
     if (product.quantity < req.body.quantity) {
-      return res.status(400).json({
-        status: "fail",
-        message: `There is only ${product.quantity} availabe items from this product`,
-      });
+      return errHandler.returnError(
+        400,
+        `There is only ${product.quantity} availabe items from this product`,
+        res
+      );
     }
     cart.quantity = req.body.quantity;
     const newCart = await Cart.findByIdAndUpdate(req.params.cartId, {
@@ -135,10 +136,7 @@ exports.updateQuantity = async (req, res) => {
       cart,
     });
   } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      err,
-    });
+    errHandler.returnError(500, "Something went wrong", res);
   }
 };
 
@@ -156,11 +154,11 @@ exports.checkout = async (req, res) => {
     ];
     for (i = 0; i < fields.length; i++) {
       if (!fields[i]) {
-        return res.status(400).json({
-          status: "fail",
-          message:
-            "Missing 1 or more of 8 fields ['email','card_number','exp_month','exp_year','cvc', 'country', 'city', 'address']",
-        });
+        return errHandler.returnError(
+          400,
+          "Missing 1 or more of 8 fields ['email','card_number','exp_month','exp_year','cvc', 'country', 'city', 'address']",
+          res
+        );
       }
     }
 
@@ -231,10 +229,7 @@ exports.checkout = async (req, res) => {
     };
 
     if (price == 0) {
-      return res.status(400).json({
-        status: "fail",
-        message: "Cart is empty",
-      });
+      return errHandler.returnError(400, "Cart is empty", res);
     }
 
     await stripe.charges.create(param);
@@ -261,10 +256,10 @@ exports.checkout = async (req, res) => {
       messgage: `Payment completed successfully`,
     });
   } catch (err) {
-    return res.status(400).json({
-      status: "fail",
-      message:
-        "Something went wrong, only stripe test cards allowed (EX: '4242424242424242')",
-    });
+    return errHandler.returnError(
+      400,
+      "Something went wrong, only stripe test cards allowed (EX: '4242424242424242')",
+      res
+    );
   }
 };

@@ -60,10 +60,7 @@ exports.login = async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      err,
-    });
+    errHandler.returnError(500, "Something went wrong", res);
   }
 };
 
@@ -93,10 +90,7 @@ exports.checkAuthorization = (req, res, next) => {
 exports.forgotPassword = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.status(404).json({
-      status: "fail",
-      message: "Email not found",
-    });
+    return errHandler.returnError(400, "Email not found", res);
   }
 
   const generatedToken = crypto.randomBytes(32).toString("hex");
@@ -139,10 +133,11 @@ exports.resetPassword = async (req, res) => {
       .json({ status: "fail", message: "Invalid token or has expired" });
 
   if (!req.body.password || !req.body.passwordConfirm) {
-    return res.status(400).json({
-      status: "fail",
-      message: "Please enter new password and confirm it",
-    });
+    return errHandler.returnError(
+      400,
+      "Please enter new password and confirm it",
+      res
+    );
   }
 
   user.password = req.body.password;
@@ -153,10 +148,7 @@ exports.resetPassword = async (req, res) => {
   try {
     await user.save();
   } catch (err) {
-    return res.status(400).json({
-      status: "fail",
-      err,
-    });
+    return errHandler.returnError(500, "Something went wrong", res);
   }
 
   res.status(200).json({

@@ -26,15 +26,10 @@ exports.addToWishList = async (req, res) => {
         wishList,
       });
     } else {
-      res.status(400).json({
-        status: "fail",
-        message: "Missing product parameter",
-      });
+      errHandler.returnError(400, "Missing product parameter", res);
     }
   } catch (err) {
-    res.status(400).json({
-      err,
-    });
+    errHandler.returnError(500, "Something went wrong", res);
   }
 };
 
@@ -65,9 +60,7 @@ exports.deleteWishList = async (req, res) => {
       wishList,
     });
   } catch (err) {
-    res.status(400).json({
-      err,
-    });
+    errHandler.returnError(500, "Something went wrong", res);
   }
 };
 

@@ -2,12 +2,16 @@ const Product = require("../models/productModel");
 const errHandler = require("../controllers/errorController");
 
 exports.getAllProducts = async (req, res) => {
-  const products = await Product.find({ quantity: { $ne: 0 } });
-  res.status(200).json({
-    status: "success",
-    results: products.length,
-    products,
-  });
+  try {
+    const products = await Product.find({ quantity: { $ne: 0 } });
+    res.status(200).json({
+      status: "success",
+      results: products.length,
+      products,
+    });
+  } catch (err) {
+    errHandler.returnError(500, "Someting went wrong", res);
+  }
 };
 
 exports.getProduct = async (req, res) => {
@@ -19,37 +23,39 @@ exports.getProduct = async (req, res) => {
       product,
     });
   } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: "Product not found",
-    });
+    errHandler.returnError(400, "Product not found", res);
   }
 };
 
 exports.getRandom = async (req, res) => {
-  const products = await Product.aggregate([
-    {
-      $sample: { size: 5 },
-    },
-  ]);
-  res.status(200).json({
-    status: "success",
-    products,
-  });
+  try {
+    const products = await Product.aggregate([
+      {
+        $sample: { size: 5 },
+      },
+    ]);
+    res.status(200).json({
+      status: "success",
+      products,
+    });
+  } catch (err) {
+    errHandler.returnError(500, "Something went wrong", res);
+  }
 };
 
 exports.getCategory = async (req, res) => {
-  const categories = ["sport", "book", "game"];
-  if (!categories.includes(req.params.category)) {
-    return res.status(400).json({
-      status: "fail",
-      message: "Invalid category",
+  try {
+    const categories = ["sport", "book", "game"];
+    if (!categories.includes(req.params.category)) {
+      return errHandler.returnError(400, "Invalid category", res);
+    }
+    const products = await Product.find({ category: req.params.category });
+    res.status(200).json({
+      status: "success",
+      results: products.length,
+      products,
     });
+  } catch (err) {
+    errHandler.returnError(500, "Something went wrong", res);
   }
-  const products = await Product.find({ category: req.params.category });
-  res.status(200).json({
-    status: "success",
-    results: products.length,
-    products,
-  });
 };
