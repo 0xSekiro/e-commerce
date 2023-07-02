@@ -71,10 +71,7 @@ exports.checkAuthorization = (req, res, next) => {
   let token = req.headers["authorization"];
   // check if token exist
   if (!token) {
-    return res.status(401).json({
-      status: "fail",
-      message: "Authorization error",
-    });
+    return errHandler.returnError(401, "Must be logged in", res);
   }
 
   // verify token
@@ -83,10 +80,11 @@ exports.checkAuthorization = (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decodedToken.id;
   } catch (err) {
-    return res.status(401).json({
-      status: "fail",
-      message: "Authorization error",
-    });
+    return errHandler.returnError(
+      403,
+      "Invalid Authorization credentials",
+      res
+    );
   }
 
   next();
