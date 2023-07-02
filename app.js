@@ -40,6 +40,9 @@ app.use("/api/v1/cart", cartRouter);
 const profileRouter = require("./routers/profileRouter");
 app.use("/api/v1/profile", profileRouter);
 
+const reviewRouter = require("./routers/reviewRouter");
+app.use("/api/v1/review", reviewRouter);
+
 app.use((req, res) => {
   res.status(404).json({
     status: "fail",

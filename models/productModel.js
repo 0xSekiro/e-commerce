@@ -28,6 +28,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Product must hava a quantity"],
     },
+    reviews: [String],
   },
   { versionKey: false }
 );
