@@ -43,6 +43,12 @@ async function checkCart(product_id, user) {
 }
 exports.addToCart = async (req, res) => {
   try {
+    if (!req.body.product || !req.body.quantity) {
+      return errHandler.returnError(
+        400,
+        "Missing 1 or more of 2 fields ['product', 'quantity']"
+      );
+    }
     if (!(await checkCart(req.body.product, req.user))) {
       return errHandler.returnError(
         400,
@@ -76,26 +82,37 @@ exports.addToCart = async (req, res) => {
 // Delete all cart itmes
 
 exports.emptyCart = async (req, res) => {
-  await Cart.deleteMany({ user: req.user });
-  res.status(204).json({
-    status: "success",
-  });
+  try {
+    await Cart.deleteMany({ user: req.user });
+    res.status(204).json({
+      status: "success",
+    });
+  } catch (err) {
+    errHandler.returnError(400, "Something went wrong", res);
+  }
 };
 
 // Delete specifc item
 exports.deleteCart = async (req, res) => {
-  await Cart.deleteOne({
-    user: req.user,
-    _id: req.params.cartId,
-  });
-  const cart = await Cart.find({ user: req.user })
-    .select("-user")
-    .populate("product");
+  try {
+    const thecart = await Cart.deleteOne({
+      user: req.user,
+      _id: req.params.cartId,
+    });
+    if (thecart.deletedCount == 0) {
+      return errHandler.returnError(400, "No such product in cart", res);
+    }
+    const cart = await Cart.find({ user: req.user })
+      .select("-user")
+      .populate("product");
 
-  res.status(200).json({
-    status: "Deleted successfully",
-    cart,
-  });
+    res.status(200).json({
+      status: "Deleted successfully",
+      cart,
+    });
+  } catch (err) {
+    errHandler.returnError(400, "Something went wrong", res);
+  }
 };
 
 // Update Quantity
