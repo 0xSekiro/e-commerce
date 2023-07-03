@@ -46,7 +46,8 @@ exports.addToCart = async (req, res) => {
     if (!req.body.product || !req.body.quantity) {
       return errHandler.returnError(
         400,
-        "Missing 1 or more of 2 fields ['product', 'quantity']"
+        "Missing 1 or more of 2 fields ['product', 'quantity']",
+        res
       );
     }
     if (!(await checkCart(req.body.product, req.user))) {
