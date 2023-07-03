@@ -120,6 +120,9 @@ exports.deleteCart = async (req, res) => {
 
 exports.updateQuantity = async (req, res) => {
   try {
+    if (!req.body.quantity) {
+      return errHandler.returnError(400, "Missing quantity field", res);
+    }
     let cart = await Cart.findOne({
       user: req.user,
       _id: req.params.cartId,
