@@ -13,6 +13,14 @@ mongoose.connect(process.env.DB_LINK).then(() => {
 
 // Middlewares
 
+// rate limiting
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({
+  windowMs: 2 * 60 * 1000, // 1 minutes
+  max: 50, // Limit each IP to 50 requests per `window` (here, per 2 minutes)
+});
+app.use(limiter);
+
 // enable cors
 const cors = require("cors");
 app.use(cors());
@@ -27,6 +35,11 @@ app.get("/", (req, res) => {
 }),
   // parse json data
   app.use("/", express.json());
+
+// prevent NoSQL injection
+const mongoSanitize = require("express-mongo-sanitize");
+app.use(mongoSanitize());
+
 // api routing
 const authRouter = require("./routers/authRouter");
 app.use("/api/v1/auth", authRouter);
