@@ -1,0 +1,664 @@
+{
+	"info": {
+		"_postman_id": "c1a91e5b-ef21-415d-b018-90009e3914a2",
+		"name": "E-commerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25672370"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Sign up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"jwt\", pm.response.json().token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"username\",\r\n    \"email\": \"email\",\r\n    \"password\": \"password\",\r\n    \"passwordConfirm\": \"passwordConfirm\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/auth/sign-up/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"sign-up",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"jwt\", pm.response.json().token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/auth/login",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgotPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/auth/forgotPassword",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"forgotPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"password\",\r\n    \"passwordConfirm\": \"confirm password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/auth/resetPassword/<token>",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"resetPassword",
+								"<token>"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "GET all products",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/products/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET specifc category products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}api/v1/products/category/sport",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"products",
+								"category",
+								"sport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET random products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}api/v1/products/random/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"products",
+								"random",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET specific product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}api/v1/products/645fa5df07a0feb6d95bb545",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"products",
+								"645fa5df07a0feb6d95bb545"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Add to cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NTY0ZWE0OWE0YTNjMDUzYTIyYjA5ZiIsImlhdCI6MTY4NDU5NTM2NSwiZXhwIjoxNjg0NTk4OTY1fQ.bCyFIOVCmwUIGZvPwi9_DQqjKk5bUApjmUdm8L91UNQ",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\": \"645fa5df07a0feb6d95bb548\",\r\n    \"quantity\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/cart/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"cart",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}api/v1/cart/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"cart",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete specific item from cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}api/v1/cart/64a242cf547b91318d8705ef",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"cart",
+								"64a242cf547b91318d8705ef"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Empty the cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}api/v1/cart/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"cart",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/cart/64a243ba547b91318d870618",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"cart",
+								"64a243ba547b91318d870618"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"email\",\r\n    \"card_number\": \"stripe test card\",\r\n    \"exp_month\": \"2\",\r\n    \"exp_year\": 2025,\r\n    \"cvc\": 235,\r\n    \"country\": \"Egypt\",\r\n    \"city\": \"alex\",\r\n    \"address\": \"smouha\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/cart/checkout",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"cart",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Get wishlist",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/profile/wishlist/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"profile",
+								"wishlist",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete wish list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/profile/wishlist/645fa5df07a0feb6d95bb540",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"profile",
+								"wishlist",
+								"645fa5df07a0feb6d95bb540"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add to wishlist",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\": \"645fa5df07a0feb6d95bb540\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/profile/wishlist",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"profile",
+								"wishlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}api/v1/profile/orders/",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"profile",
+								"orders",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Add review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\": \"645fa5df07a0feb6d95bb540\",\r\n    \"review\": \"Very good boxing tool\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}api/v1/review",
+							"host": [
+								"{{url}}api"
+							],
+							"path": [
+								"v1",
+								"review"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
