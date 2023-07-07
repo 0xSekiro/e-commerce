@@ -14,6 +14,8 @@ E-commerce RESTful api using Node js | Express | MongoDB | Passport.js | Stripe 
 8- Online payment with stripe (only stripe test cards are allowed)<br />
 9- Users who buy can review it<br />
 10- Using jwt for authorization <br />
+11- Error handling <br />
+12- Secure by add rate limit and prevent NoSQL injection attacks <br />
 
 # Api link
 
